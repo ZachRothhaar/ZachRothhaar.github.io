@@ -135,7 +135,7 @@
           <option value='{"level":"1","shafts":"15","xp":"5"}'> Log </option>
           <option value='{"level":"15","shafts":"20","xp":"7.5"}'> Oak Log </option>
           <option value='{"level":"30","shafts":"25","xp":"10"}'> Willow Log </option>
-          <option value='{"level":"45","shafts":"30","xp":"12.5"}'> Maple Log/Acadia Log </option>
+          <option value='{"level":"45","shafts":"30","xp":"12.5"}'> Maple Log / Acadia Log </option>
           <option value='{"level":"60","shafts":"35","xp":"15"}'> Yew Log </option>
           <option value='{"level":"75","shafts":"40","xp":"17.5"}'> Magic Log </option>
           <option value='{"level":"90","shafts":"45","xp":"20"}'> Elder Log </option>
@@ -164,13 +164,13 @@
       </div>
       
       <div>
-        <label for="currentLevel">Current Level (1-120):</label>
-        <input type="number" id="currentLevel" name="Current Shafts" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+        <label for="currentExperience">Current Experience (1-200M):</label>
+        <input type="number" id="currentExperience" name="Current Experience" value="0" min="0" max="200000000" onkeyup="forceMinMax(this)">
       </div>
 
       <div>
-        <label for="targetLevel">Target Level (1-120):</label>
-        <input type="number" id="targetLevel" name="Target Level" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+        <label for="targetLevel">Target Level (2-120):</label>
+        <input type="number" id="targetLevel" name="Target Level" value="2" min="2" max="120" onkeyup="forceMinMax(this)">
       </div>
 
       <button id="calculateButton" onclick="CalcFletching();">Calculate</button>
@@ -205,23 +205,29 @@
   function CalcFletching()
   {
     var logInfo = JSON.parse(document.getElementById('log').value);
-    var shaftsPerLog = logInfo.shafts;
-    var xpPerLog = logInfo.xp;
-    
+    var shaftsPerLog = parseInt(logInfo.shafts);
+    var xpPerLog = parseFloat(logInfo.xp);
     var featheringXp = 15;
 
     var currentShafts = document.getElementById('currentShafts').value;
 
     var arrowheadInfo = JSON.parse(document.getElementById('arrowheadType').value);
-    var xpPerTipSet = arrowheadInfo.xp;
+    var xpPerTipSet = parseFloat(arrowheadInfo.xp);
 
-    var currentLevel = document.getElementById('currentLevel').value;
-    var currentLevelXp = standardXpTable.StandardSkillsExperienceTable[currentLevel - 1].XP; //Subtract 1 due to starting index of 0
-
+    var currentExperience = parseInt(document.getElementById('currentExperience').value);
     var targetLevel = document.getElementById('targetLevel').value;
     var targetLevelXp = standardXpTable.StandardSkillsExperienceTable[targetLevel - 1].XP; //Subtract 1 due to starting index of 0
 
-    var totalXpBetweenLevels = targetLevelXp - currentLevelXp;
+    var totalXpToGoal = targetLevelXp - currentExperience;
+
+    var logMath = (xpPerLog/shaftsPerLog) * 15;
+
+    var setsNeeded = Math.ceil(totalXpToGoal / (logMath + xpPerTipSet + featheringXp));
+    var headlessShaftsNeeded = (setsNeeded * 15);
+    var logsNeeded = Math.ceil(headlessShaftsNeeded / shaftsPerLog);
+
+    console.log("You will reach your goal while making arrow set " + setsNeeded + ". This will require " + logsNeeded + " " + log.options[log.selectedIndex].text + "s, making " + headlessShaftsNeeded + " shafts, and will also require " 
+                + headlessShaftsNeeded + " feathers/arrowheads (Potentially -15 of each depending on what step of the last set hits the goal).");
   }
 </script>
 
