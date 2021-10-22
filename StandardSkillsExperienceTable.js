@@ -1,4 +1,4 @@
-var standardXpTable = 
+var standardXpTable =
 {
     "StandardSkillsExperienceTable":
     [

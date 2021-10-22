@@ -117,6 +117,7 @@
 </head>
 
 <body>
+  <script src="StandardSkillsExperienceTable.js"></script>
   <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <a href="#">Home</a>
@@ -129,22 +130,15 @@
       <h2>Creation Of Arrows</h2>
       
       <div>
-        <label for="runemetrics">Lookup Runemetrics Profile:</label>
-        <input type="text" id="runemetrics" name="Runemetrics" size="5">
-      </div>
-
-      <button id="metricsSearchButton" onclick="FindMetrics();">Search</button>
-
-      <div>
         <label id="logLabel" for="log">Type of Logs to Fletch:</label>
         <select name="Log" id="log">
-          <option value='{"shafts":"15","xp":"5"}'> Log </option>
-          <option value='{"shafts":"20","xp":"7.5"}'> Oak Log </option>
-          <option value='{"shafts":"25","xp":"10"}'> Willow Log </option>
-          <option value='{"shafts":"30","xp":"12.5"}'> Maple Log/Acadia Log </option>
-          <option value='{"shafts":"35","xp":"15"}'> Yew Log </option>
-          <option value='{"shafts":"40","xp":"17.5"}'> Magic Log </option>
-          <option value='{"shafts":"45","xp":"20"}'> Elder Log </option>
+          <option value='{"level":"1","shafts":"15","xp":"5"}'> Log </option>
+          <option value='{"level":"15","shafts":"20","xp":"7.5"}'> Oak Log </option>
+          <option value='{"level":"30","shafts":"25","xp":"10"}'> Willow Log </option>
+          <option value='{"level":"45","shafts":"30","xp":"12.5"}'> Maple Log/Acadia Log </option>
+          <option value='{"level":"60","shafts":"35","xp":"15"}'> Yew Log </option>
+          <option value='{"level":"75","shafts":"40","xp":"17.5"}'> Magic Log </option>
+          <option value='{"level":"90","shafts":"45","xp":"20"}'> Elder Log </option>
         </select>
       </div>
       
@@ -154,23 +148,21 @@
       </div>
 
       <div>
-        <label for="arrowHeadType">Type of Arrowheads:</label>
-        <select name="Arrowheads" id="arrowHeadType">
-          <option value="0">Select ArrowHead Type</option>
-          <option value="1">Bronze</option>
-          <option value="2">Iron</option>
-          <option value="3">Mithril</option>
-          <option value="4">Adamant</option>
-          <option value="5">Rune</option>
-          <option value="6">Broad</option>
+        <label for="arrowheadType">Type of Arrowheads:</label>
+        <select name="Arrowheads" id="arrowheadType">
+          <option value='{"level":"1","xp":"19.5"}'> Bronze </option>
+          <option value='{"level":"15","xp":"37.5"}'> Iron </option>
+          <option value='{"level":"30","xp":"75"}'> Steel </option>
+          <option value='{"level":"45","xp":"112.5"}'> Mithril </option>
+          <option value='{"level":"52","xp":"225"}'> Broad </option>
+          <option value='{"level":"60","xp":"150"}'> Adamant </option>
+          <option value='{"level":"75","xp":"187.5"}'> Rune </option>
+          <option value='{"level":"76","xp":"187.5"}'> Bane </option>
+          <option value='{"level":"90","xp":"225"}'> Dragon </option>
+          <option value='{"level":"95","xp":"262.5"}'> Dark </option>
         </select>
       </div>
       
-      <div>
-        <label for="currentHeads">Current Number of Arrowheads (Must Match Type Above):</label>
-        <input type="text" id="currentHeads" name="Current Arrowheads" size="5">
-      </div>
-
       <div>
         <label for="currentLevel">Current Level (1-120):</label>
         <input type="number" id="currentLevel" name="Current Shafts" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
@@ -182,13 +174,11 @@
       </div>
 
       <button id="calculateButton" onclick="CalcFletching();">Calculate</button>
-  </div><!--End Of Main Div-->
+  </div>
 </body>
 
 <script>
-  var XPTarget = 1300000;
-
-  function openNav() 
+   function openNav() 
   {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -212,52 +202,26 @@
     }
   }
 
-  async function FindMetrics()
-  {
-    var name = document.getElementById('runemetrics').value;
-
-    var response = await fetch('https://apps.runescape.com/runemetrics/profile/profile?user=' + name + '&activities=20').then(res => res.json());
-  }
-
   function CalcFletching()
   {
     var logInfo = JSON.parse(document.getElementById('log').value);
     var shaftsPerLog = logInfo.shafts;
     var xpPerLog = logInfo.xp;
     
+    var featheringXp = 15;
+
     var currentShafts = document.getElementById('currentShafts').value;
 
-    var XPPerShaftMade = 5;
-    var QuantityOfShaftsMade = 0;
-    var Feathers = 15;
-    var TypeOfArrows = "";
-    var XPFromTypeOfArrows = 221.5;
+    var arrowheadInfo = JSON.parse(document.getElementById('arrowheadType').value);
+    var xpPerTipSet = arrowheadInfo.xp;
 
-    var XPOutfitBonus = 0;
+    var currentLevel = document.getElementById('currentLevel').value;
+    var currentLevelXp = standardXpTable.StandardSkillsExperienceTable[currentLevel - 1].XP; //Subtract 1 due to starting index of 0
 
-    var TargetLevel = 1;
+    var targetLevel = document.getElementById('targetLevel').value;
+    var targetLevelXp = standardXpTable.StandardSkillsExperienceTable[targetLevel - 1].XP; //Subtract 1 due to starting index of 0
 
-    var TimeCost = 0;
-    var GPCost = 0;
-    var Answer = 0;
-    var AmountOfActions = 0;
-
-    var CurrentLevel = document.getElementById('CurrLevel');
-    var currLvl = CurrentLevel.options[CurrentLevel.selectedIndex].innerHTML;
-
-    var LvlTarget = document.getElementById('LVLTarget');
-    var TargetLvl = LvlTarget.options[LvlTarget.selectedIndex].innerHTML;
-
-    alert(currLvl);
-    alert(TargetLvl);
-
-
-    AmountOfActions = XPTarget/(XPFromTypeOfArrows + XPPerShaftMade + Feathers); //BXP needs calculated
-
-
-    Answer = AmountOfActions * 15;
-    alert(Answer.toFixed(3) + " Required Arrow heads");
-
+    var totalXpBetweenLevels = targetLevelXp - currentLevelXp;
   }
 </script>
 
