@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>RS Calculators</title>
-  
+
   <Style>
 
     body 
@@ -29,6 +29,14 @@
       height: 20px;
       width: 300px;
       border: 1px solid #000;
+      margin-top: 10px;
+    }
+
+    p
+    {
+      font-family:'Times New Roman', Times, serif;
+      font-size: 18px;
+      height: 20px;
       margin-top: 10px;
     }
 
@@ -173,6 +181,11 @@
       </div>
 
       <button id="calculateButton" onclick="CalcFletching();">Calculate</button>
+
+      <div>
+        <label for="results">Results:</label>
+        <p id="results"></p>
+      </div>
   </div>
 </body>
 
@@ -222,11 +235,13 @@
     var logMath = (xpPerLog/shaftsPerLog) * 15;
 
     var setsNeeded = Math.ceil(totalXpToGoal / (logMath + xpPerTipSet + featheringXp));
-    var headlessShaftsNeeded = (setsNeeded * 15);
-    var logsNeeded = Math.ceil(headlessShaftsNeeded / shaftsPerLog);
+    var ingredientsNeeded = (setsNeeded * 15);
+    var logsNeeded = Math.ceil(ingredientsNeeded / shaftsPerLog);
 
-    console.log("You will reach your goal while making arrow set " + setsNeeded + ". This will require " + logsNeeded + " " + log.options[log.selectedIndex].text + "s, making " + headlessShaftsNeeded + " shafts, and will also require " 
-                + headlessShaftsNeeded + " feathers/arrowheads (Potentially -15 of each depending on what step of the last set hits the goal).");
+    document.getElementById("results").innerHTML = "You will reach your goal while making arrow set " + setsNeeded + ". " +
+                                                   "This will require " + logsNeeded + " " + log.options[log.selectedIndex].text + "s, making " + ingredientsNeeded + " shafts. " +
+                                                   "This will also require " + ingredientsNeeded + " feathers/arrowheads (Potentially -15 of each depending on what step of the last set hits the goal). " +
+                                                   "This will require smithing " + Math.ceil(ingredientsNeeded / 75) + " bars to obtain enough arrowheads.";
   }
 </script>
 
