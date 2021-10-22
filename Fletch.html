@@ -7,12 +7,43 @@
 
   <Style>
 
-    body {
+    body 
+    {
       background-color:lightslategrey;
-     /* background-image:url("Bryce.PNG");*/
     }
 
-    .sidebar {
+    label
+    {
+      font-family:'Times New Roman', Times, serif;
+      font-size: 18px;
+      height: 20px;
+      margin-top: 10px;
+      margin-left: 10px;
+      text-align: right;
+      margin-right:15px;
+      clear: both;
+      float: left;
+    }
+
+    input
+    {
+      height: 20px;
+      width: 300px;
+      border: 1px solid #000;
+      margin-top: 10px;
+    }
+
+    select
+    {
+      font-size: 14px;
+      height: 20px;
+      width: 300px;
+      border: 1px solid #000;
+      margin-top: 10px;
+    }
+
+    .sidebar 
+    {
       height: 100%;
       width: 0;
       position: fixed;
@@ -25,7 +56,8 @@
       padding-top: 60px;
     }
 
-    .sidebar a {
+    .sidebar a 
+    {
       padding: 8px 8px 8px 32px;
       text-decoration: none;
       font-size: 25px;
@@ -34,11 +66,13 @@
       transition: 0.3s;
     }
 
-    .sidebar a:hover {
+    .sidebar a:hover 
+    {
       color: #f1f1f1;
     }
 
-    .sidebar .closebtn {
+    .sidebar .closebtn 
+    {
       position: absolute;
       top: 0;
       right: 25px;
@@ -46,7 +80,8 @@
       margin-left: 50px;
     }
 
-    .openbtn {
+    .openbtn 
+    {
       font-size: 20px;
       cursor: pointer;
       background-color: #111;
@@ -55,114 +90,142 @@
       border: none;
     }
 
-    .openbtn:hover {
+    .openbtn:hover 
+    {
       background-color: #444;
     }
 
-    #main {
+    #main 
+    {
       transition: margin-left .5s;
       padding: 16px;
     }
 
-
-
-    @media screen and (max-height: 450px) {
-      .sidebar {
+    @media screen and (max-height: 450px) 
+    {
+      .sidebar 
+      {
         padding-top: 15px;
       }
 
-      .sidebar a {
+      .sidebar a 
+      {
         font-size: 18px;
       }
     }
   </Style>
-
 </head>
+
 <body>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="#">Home</a>
+    <a href="#">Fletching</a>
+  </div>
 
+  <div id="main">
+    <button class="openbtn" onclick="openNav()">☰ Skills</button>
 
+      <h2>Creation Of Arrows</h2>
+      
+      <div>
+        <label for="runemetrics">Lookup Runemetrics Profile:</label>
+        <input type="text" id="runemetrics" name="Runemetrics" size="5">
+      </div>
 
-<div id="mySidebar" class="sidebar">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-  <a href="#">Home</a>
-  <a href="#">Fletching</a>
-  <a href="#">SkillGoesHere</a>
-  <a href="#">SkillGoesHere</a>
-  <a href="#">SkillGoesHere</a>
-</div>
+      <button id="metricsSearchButton" onclick="FindMetrics();">Search</button>
 
-<div id="main">
-  <button class="openbtn" onclick="openNav()">☰ Skills</button>
+      <div>
+        <label id="logLabel" for="log">Type of Logs to Fletch:</label>
+        <select name="Log" id="log">
+          <option value='{"shafts":"15","xp":"5"}'> Log </option>
+          <option value='{"shafts":"20","xp":"7.5"}'> Oak Log </option>
+          <option value='{"shafts":"25","xp":"10"}'> Willow Log </option>
+          <option value='{"shafts":"30","xp":"12.5"}'> Maple Log/Acadia Log </option>
+          <option value='{"shafts":"35","xp":"15"}'> Yew Log </option>
+          <option value='{"shafts":"40","xp":"17.5"}'> Magic Log </option>
+          <option value='{"shafts":"45","xp":"20"}'> Elder Log </option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="currentShafts">Current Number of Arrow Shafts:</label>
+        <input type="text" id="currentShafts" name="Current Shafts" size="5">
+      </div>
 
+      <div>
+        <label for="arrowHeadType">Type of Arrowheads:</label>
+        <select name="Arrowheads" id="arrowHeadType">
+          <option value="0">Select ArrowHead Type</option>
+          <option value="1">Bronze</option>
+          <option value="2">Iron</option>
+          <option value="3">Mithril</option>
+          <option value="4">Adamant</option>
+          <option value="5">Rune</option>
+          <option value="6">Broad</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="currentHeads">Current Number of Arrowheads (Must Match Type Above):</label>
+        <input type="text" id="currentHeads" name="Current Arrowheads" size="5">
+      </div>
 
-    <h2>Creation Of Arrows</h2>
-    <select name="Log" id="Log">
-      <option value="0">Select Log Type</option>
-      <option value="1">Log</option>
-      <option value="2">Oak Log</option>
-      <option value="3">Willow Log</option>
-      <option value="4">Maple Log/AcadiaLog</option>
-      <option value="5">Yew Log</option>
-      <option value="6">Magic Log</option>
-      <option value="7">Elder Log</option>
-    </select>
+      <div>
+        <label for="currentLevel">Current Level (1-120):</label>
+        <input type="number" id="currentLevel" name="Current Shafts" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+      </div>
 
-    <select name="ArrowHead" id="ArrowHead">
-      <option value="0">Select ArrowHead Type</option>
-      <option value="1">Bronze</option>
-      <option value="2">Iron</option>
-      <option value="3">Mithril</option>
-      <option value="4">Adamant</option>
-      <option value="5">Rune</option>
-      <option value="6">Broad</option>
-    </select>
+      <div>
+        <label for="targetLevel">Target Level (1-120):</label>
+        <input type="number" id="targetLevel" name="Target Level" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+      </div>
 
-    <label id="currentLevelLabel" for="currentLevel">Current Level</label>
-    <select name="CurrentLevel" id="currentLevel"></select>
-
-    <script>
-      var currentLevel = document.getElementById("currentLevel");
-      var contents;
-
-      for (let i = 1; i <= 120; i++) {
-        contents += "<option>" + i + "</option>";
-      }
-        
-      currentLevel.innerHTML = contents;
-    </script>
-
-    <label id="targetLevelLabel" for="targetLevel">Target Level</label>
-    <select name="TargetLevel" id="targetLevel"></select>
-     
-    <script>
-      var targetLevel = document.getElementById("targetLevel");
-      var contents;
-
-      for (let i = 1; i <= 120; i++) {
-        contents += "<option>" + i + "</option>";
-      }
-        
-      targetLevel.innerHTML = contents;
-    </script>
-
-    <button onclick="CalcFletching();">Calculate</button>
-</div><!--End Of Main Div-->
+      <button id="calculateButton" onclick="CalcFletching();">Calculate</button>
+  </div><!--End Of Main Div-->
 </body>
+
 <script>
   var XPTarget = 1300000;
 
-  function openNav() {
+  function openNav() 
+  {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
   }
 
-  function closeNav() {
+  function closeNav() 
+  {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
   }
 
+  function forceMinMax(num)
+  {
+    if (parseInt(num.value) < parseInt(num.min))
+    {
+      num.value = num.min;
+    }
+    if (parseInt(num.value) > parseInt(num.max))
+    {
+      num.value = num.max;
+    }
+  }
 
-  function CalcFletching(){
+  async function FindMetrics()
+  {
+    var name = document.getElementById('runemetrics').value;
+
+    var response = await fetch('https://apps.runescape.com/runemetrics/profile/profile?user=' + name + '&activities=20').then(res => res.json());
+  }
+
+  function CalcFletching()
+  {
+    var logInfo = JSON.parse(document.getElementById('log').value);
+    var shaftsPerLog = logInfo.shafts;
+    var xpPerLog = logInfo.xp;
+    
+    var currentShafts = document.getElementById('currentShafts').value;
 
     var XPPerShaftMade = 5;
     var QuantityOfShaftsMade = 0;
@@ -178,9 +241,6 @@
     var GPCost = 0;
     var Answer = 0;
     var AmountOfActions = 0;
-
-    var value1 = document.getElementById('Log').value;
-
 
     var CurrentLevel = document.getElementById('CurrLevel');
     var currLvl = CurrentLevel.options[CurrentLevel.selectedIndex].innerHTML;
@@ -199,10 +259,6 @@
     alert(Answer.toFixed(3) + " Required Arrow heads");
 
   }
-
-
-
 </script>
 
 </html>
-
