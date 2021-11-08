@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RS Calculators</title>
+
+
+  <Style>
+
+    body {
+      background-color:lightslategrey;
+
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #111;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+    }
+
+    .openbtn:hover {
+      background-color: #444;
+    }
+
+    #main {
+      transition: margin-left .5s;
+      padding: 16px;
+    }
+
+
+    @media screen and (max-height: 450px) {
+      .sidebar {
+        padding-top: 15px;
+      }
+
+      .sidebar a {
+        font-size: 18px;
+      }
+    }
+  </Style>
+
+</head>
+<body>
+
+
+<script src="StandardSkillsExperienceTable.js"></script>
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="#">Home</a>
+  <a href="https://zachrothhaar.github.io/Fletch.html">Fletching</a>
+  <a href="https://zachrothhaar.github.io/Smith.html">Smithing</a>
+  <a href="https://zachrothhaar.github.io/w60pengs.html">W60Pengs</a>
+  <a href="https://zachrothhaar.github.io/ALog.html">Adventure Logs</a>
+</div>
+
+<br>
+
+<div id="main">
+  <button class="openbtn" onclick="openNav()">☰ Skills</button>
+
+  <div>
+    Select Blacksmith Armor Bonus:
+    <select id="BXPAmt" >
+      <option value=0>0%</option>
+      <option value=.01>1%</option>
+      <option value=.02>2%</option>
+      <option value=.03>3%</option>
+      <option value=.04>4%</option>
+      <option value=.06>6%</option>
+    </select>
+  </div>
+  <br>
+  <div>
+    Select a Burial Set:
+    <select id="ArmourLabel" >
+      <option value='{"xp":12444,"BarAMT":48}'>AdamantSet</option>
+      <option value='{"xp":35136, "BarAMT":96}'>RuneSet</option>
+      <option value='{"xp":51240, "BarAmt":96}'>OrikalkumSet</option>
+      <option value='{"xp":146400, "BarAmt":192}'>NecroniumSet</option>
+      <option value='{"xp":204960, "BarAmt":192}'>BaneSet</option>
+      <option value='{"xp":585600, "BarAmt":384}' >ElderRuneSet</option>
+    </select>
+  </div>
+
+  <br>
+
+  <div>
+    <label for="currentLevel">Current Level (1-120):</label>
+    <input type="number" id="currentLevel" name="Current Shafts" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+  </div>
+
+  <br>
+
+  <div>
+    <label for="targetLevel">Target Level (1-120):</label>
+    <input type="number" id="targetLevel" name="Target Level" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
+  </div>
+
+  <button onclick="CalcBurialSmithing()">Calculate</button>
+
+
+</div><!--End Of Main Div-->
+</body>
+
+
+<script>
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
+
+  function CalcBurialSmithing() {
+
+    var currentLevel = document.getElementById('currentLevel').value;
+    var currentLevelXp = standardXpTable.StandardSkillsExperienceTable[currentLevel - 1].XP; //Subtract 1 due to starting index of 0
+
+    var targetLevel = document.getElementById('targetLevel').value;
+    var targetLevelXp = standardXpTable.StandardSkillsExperienceTable[targetLevel - 1].XP; //Subtract 1 due to starting index of 0
+
+
+    var armorTypeInfo = JSON.parse(document.getElementById('ArmourLabel').value);
+    var xpPerArmorSet = armorTypeInfo.xp;
+
+
+    var PercentBXP = document.getElementById('BXPAmt').value;
+
+    var BEXP = xpPerArmorSet * (PercentBXP);
+
+
+
+
+    var totalXpBetweenLevels = targetLevelXp - currentLevelXp;
+
+
+    var Answer = totalXpBetweenLevels / (xpPerArmorSet + BEXP);
+
+    alert(Answer);
+  }
+
+
+
+</script>
+
+</html>
