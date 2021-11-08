@@ -64,6 +64,13 @@
       padding: 16px;
     }
 
+    #outputTable{
+      border:1px solid black;
+      font-size:16pt;
+    }
+    #outputTable td{
+      border:2px solid black;
+    }
 
     @media screen and (max-height: 450px) {
       .sidebar {
@@ -95,7 +102,7 @@
 <div id="main">
   <button class="openbtn" onclick="openNav()">☰ Skills</button>
 
-  <h1>INCOMPLETE FUNCTIONALITY STILL NEEDED </h1>
+  <h2>Burial Armour Smithing </h2>
 
   <div>
     Select Blacksmith Armor Bonus:
@@ -112,12 +119,12 @@
   <div>
     Select a Burial Set:
     <select id="ArmourLabel" >
-      <option value='{"xp":12444,"BarAMT":48}'>AdamantSet</option>
-      <option value='{"xp":35136, "BarAMT":96}'>RuneSet</option>
-      <option value='{"xp":51240, "BarAmt":96}'>OrikalkumSet</option>
-      <option value='{"xp":146400, "BarAmt":192}'>NecroniumSet</option>
-      <option value='{"xp":204960, "BarAmt":192}'>BaneSet</option>
-      <option value='{"xp":585600, "BarAmt":384}' >ElderRuneSet</option>
+      <option value='{"xp":12444,"BarAMT":48, "name":"Adamant Set"}'>Adamant Set</option>
+      <option value='{"xp":35136, "BarAMT":96, "name":"Rune Set"}'>Rune Set</option>
+      <option value='{"xp":51240, "BarAMT":96, "name":"Orikalkum Set"}'>Orikalkum Set</option>
+      <option value='{"xp":146400, "BarAMT":192, "name":"Necronium Set"}'>Necronium Set</option>
+      <option value='{"xp":204960, "BarAMT":192, "name":"Bane Set"}'>Bane Set</option>
+      <option value='{"xp":585600, "BarAMT":384, "name":"Elder-Rune Set"}' >Elder-Rune Set</option>
     </select>
   </div>
 
@@ -135,10 +142,31 @@
     <input type="number" id="targetLevel" name="Target Level" value="1" size="3" min="1" max="120" onkeyup="forceMinMax(this)">
   </div>
 
+  <br>
+
   <button onclick="CalcBurialSmithing()">Calculate</button>
 
+  <br>
+  <br>
+  <br>
 
 </div><!--End Of Main Div-->
+
+<table id="outputTable" >
+  <tr align="center">
+    <td> Armour Selected </td>
+    <td> Bars needed </td>
+    <td> Exp Between Levels </td>
+    <td> Amount of Sets Needed </td>
+  </tr>
+  <tr align="center">
+    <td id="ArmourTypeText">----</td>
+    <td id="BarsNeededText">----</td>
+    <td id="XpBetweenLVLText">----</td>
+    <td id="AmountofSetsNeededText">----</td>
+  </tr>
+</table>
+
 </body>
 
 
@@ -163,22 +191,29 @@
 
 
     var armorTypeInfo = JSON.parse(document.getElementById('ArmourLabel').value);
-    var xpPerArmorSet = armorTypeInfo.xp;
-
 
     var PercentBXP = document.getElementById('BXPAmt').value;
 
+
+    var xpPerArmorSet = armorTypeInfo.xp;
+    var barsNeeded = armorTypeInfo.BarAMT;
+    var nameOfSet = armorTypeInfo.name;
+
+
+
+
     var BEXP = xpPerArmorSet * (PercentBXP);
-
-
-
 
     var totalXpBetweenLevels = targetLevelXp - currentLevelXp;
 
-
     var Answer = totalXpBetweenLevels / (xpPerArmorSet + BEXP);
 
-    alert(Answer);
+    document.getElementById("ArmourTypeText").innerHTML = nameOfSet;
+    document.getElementById("BarsNeededText").innerHTML = barsNeeded;
+    document.getElementById("XpBetweenLVLText").innerHTML = totalXpBetweenLevels;
+    document.getElementById("AmountofSetsNeededText").innerHTML = Answer.toFixed(3);
+
+
   }
 
 
