@@ -209,7 +209,7 @@
     var barsNeeded = armorTypeInfo.BarAMT * Answer;
 
     document.getElementById("ArmourTypeText").innerHTML = nameOfSet;
-    document.getElementById("BarsNeededText").innerHTML = barsNeeded;
+    document.getElementById("BarsNeededText").innerHTML = barsNeeded.toFixed(2);
     document.getElementById("XpBetweenLVLText").innerHTML = totalXpBetweenLevels;
     document.getElementById("AmountofSetsNeededText").innerHTML = Answer.toFixed(3);
 
