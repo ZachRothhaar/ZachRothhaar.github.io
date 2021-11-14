@@ -196,10 +196,8 @@
 
 
     var xpPerArmorSet = armorTypeInfo.xp;
-    var barsNeeded = armorTypeInfo.BarAMT;
+
     var nameOfSet = armorTypeInfo.name;
-
-
 
 
     var BEXP = xpPerArmorSet * (PercentBXP);
@@ -207,6 +205,8 @@
     var totalXpBetweenLevels = targetLevelXp - currentLevelXp;
 
     var Answer = totalXpBetweenLevels / (xpPerArmorSet + BEXP);
+
+    var barsNeeded = armorTypeInfo.BarAMT * Answer;
 
     document.getElementById("ArmourTypeText").innerHTML = nameOfSet;
     document.getElementById("BarsNeededText").innerHTML = barsNeeded;
